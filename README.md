@@ -3,7 +3,7 @@
 
 ## 요약
 
-<img width="800" alt="image" src="https://gist.github.com/user-attachments/assets/54a0abb8-caa3-4016-9758-bc63a9de3d93" />
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/4afea77f-b04b-488d-b5ad-1b37d6bcace7" />
 
 포OO 마스터가 되고 싶었던 철수는, 어느 날 배틀의 성지라고 불리는 성도지방으로 이사를 가기로 했습니다.
 
