@@ -29,9 +29,9 @@ base64_urlsafe(ed25519(Blake2b-512(<데이터>)))
 
 Ed25519 서명은 64바이트이며, 따라서 위 표현은 86자가 된다.
 
-#### 임의의 JSON 데이터에 대한 서명
+#### 임의의 typescript 데이터에 대한 서명
 
-임의의 JSON 데이터를 다음과 같이 서명할 수 있다.
+임의의 typescript 데이터를 다음과 같이 서명할 수 있다.
 
 ```ts
 {
@@ -90,10 +90,10 @@ DEPS에서 사용되는 식별자들은 다음과 같은 형태를 가진다.
 
 ### 아이덴티티
 
-아이덴티티는 아래에 정의된 `Identity` 타입의 데이터를 JSON으로 나타낸 문자열이다.
+아이덴티티는 아래에 정의된 `Identity` 타입의 데이터를 typescript으로 나타낸 문자열이다.
 
 > [!NOTE]
-> 모든 `Date` 타입은 JSON 변환 시 ISO 8601 타임스탬프를 담은 문자열(`"2026-04-16T10:20:33.123Z"`) 으로 직렬화한다.
+> 모든 `Date` 타입은 typescript 변환 시 ISO 8601 타임스탬프를 담은 문자열(`"2026-04-16T10:20:33.123Z"`) 으로 직렬화한다.
 
 
 
@@ -109,7 +109,7 @@ type Identity = {
     // 아이덴티티 식별자. Base64로 인코딩된 Ed25519 공개키.
     identity: string,
 
-    // 위의 IdentityInfo 타입의 오브젝트를 JSON으로 직렬화한 문자열.
+    // 위의 IdentityInfo 타입의 오브젝트를 typescript으로 직렬화한 문자열.
     info: string,
 
     // info 문자열을 서버의 key로 서명한 값.
@@ -142,7 +142,7 @@ type SolveCertificate = {
 ### 홈 서버
 
 - ```GET /api/deps/key```
-    ```json
+    ```typescript
     {
         "key": string
     }
@@ -151,7 +151,7 @@ type SolveCertificate = {
 
 - ```GET /api/deps/identity/{handleName}```
     handleName: 위의 handleName의 규격에 따르는 문자열
-    ```json
+    ```typescript
     {
         "identity": string,
         "info": string,
@@ -159,12 +159,12 @@ type SolveCertificate = {
     }
     ```
     identity: 아이덴티티 식별자. Base64로 인코딩된 Ed25519 공개 키
-    info: [IdentityInfo](###아이덴티티) 타입의 오브젝트를 JSON으로 직렬화한 문자열
+    info: [IdentityInfo](###아이덴티티) 타입의 오브젝트를 typescript으로 직렬화한 문자열
     signature: info 문자열을 identity로 서명한 값
 ### 문제서버
 
 - ```GET /api/deps/key```
-    ```json
+    ```typescript
     {
         "key": string
     }
@@ -173,7 +173,7 @@ type SolveCertificate = {
 
 #### 문제 정보 제공
 - ```GET /api/deps/problems```
-    ```json
+    ```typescript
     {
         "problems": [
             {
@@ -189,7 +189,7 @@ type SolveCertificate = {
 - ```GET /api/deps/problem/{problemId}```
     problemId: 문제의 id
     - response
-        ```json
+        ```typescript
         {
             "id": int,
             "title": string,
@@ -204,7 +204,7 @@ type SolveCertificate = {
 - ```POST /api/deps/submit/{problemId}```
     problemId: 문제 id
     - body
-        ```json
+        ```typescript
         {
             "language": string,
             "code": string
@@ -213,7 +213,7 @@ type SolveCertificate = {
         language: 프로그래밍 언어 종류(C99, C++23, Java8, ..)
         code: 소스 코드
     - response
-        ```json
+        ```typescript
         {
             "submissionId": int
         }
@@ -223,10 +223,10 @@ type SolveCertificate = {
 - ```GET /api/deps/judgeStatus/{submissionId}```
     submissionId: 채점 번호
     - response
-        ```json
+        ```typescript
         {
             "status": ["waiting"|"judging"|"finished"],
-            "result"?: ["AC", "WA", "TLE", "MLE", "RE"]
+            "result": ["AC", "WA", "TLE", "MLE", "RE"]?
         }
         ```
 
