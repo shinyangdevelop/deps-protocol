@@ -92,9 +92,9 @@ DEPS에서 사용되는 식별자들은 다음과 같은 형태를 가진다.
 
 아이덴티티는 아래에 정의된 `Identity` 타입의 데이터를 JSON으로 나타낸 문자열이다.
 
-:::warning
-모든 `Date` 타입은 JSON 변환 시 ISO 8601 타임스탬프를 담은 문자열(`"2026-04-16T10:20:33.123Z"`) 으로 직렬화한다.
-:::
+> [!NOTE]
+> 모든 `Date` 타입은 typescript 변환 시 ISO 8601 타임스탬프를 담은 문자열(`"2026-04-16T10:20:33.123Z"`) 으로 직렬화한다.
+
 
 
 ```ts
@@ -112,7 +112,7 @@ type Identity = {
     // 위의 IdentityInfo 타입의 오브젝트를 JSON으로 직렬화한 문자열.
     info: string,
 
-    // info 문자열을 key로 서명한 값.
+    // info 문자열을 identity에 대응하는 비밀 키로 서명한 값.
     signature: string,
 }
 ```
@@ -142,87 +142,93 @@ type SolveCertificate = {
 ### 홈 서버
 
 - ```GET /api/deps/key```
-```json
-{
-    "key": string
-}
-```
-key: Base64로 인코딩된 이 서버의 Ed25519 공개 키
+    ```typescript
+    {
+        "key": string
+    }
+    ```
+    key: Base64로 인코딩된 이 서버의 Ed25519 공개 키
 
-- ```GET /api/deps/identity/{UUID}```
-```json
-{
-    "key": string,
-    "info": string,
-    "sign": string
-}
-```
-key: Base64로 인코딩된 이 서버의 Ed25519 공개 키
-info: [IdentityInfo](###아이덴티티) 타입의 오브젝트를 JSON으로 직렬화한 문자열
-sign: info 문자열을 key로 서명한 값
+- ```GET /api/deps/identity/{handleName}```
+    handleName: 위의 handleName의 규격에 따르는 문자열
+    ```typescript
+    {
+        "identity": string,
+        "info": string,
+        "signature": string
+    }
+    ```
+    identity: 아이덴티티 식별자. Base64로 인코딩된 Ed25519 공개 키
+    info: [IdentityInfo](###아이덴티티) 타입의 오브젝트를 typescript으로 직렬화한 문자열
+    signature: info 문자열을 identity로 서명한 값
 ### 문제서버
 
 - ```GET /api/deps/key```
-```json
-{
-    "key": string
-}
-```
-key: Base64로 인코딩된 이 서버의 Ed25519 공개 키
+    ```typescript
+    {
+        "key": string
+    }
+    ```
+    key: Base64로 인코딩된 이 서버의 Ed25519 공개 키
 
 #### 문제 정보 제공
 - ```GET /api/deps/problems```
-```json
-{
-    "problems": [
-        {
-            "id": int, 
-            "title": string
-        },
-        ...
-    ]
-}
-```
-id: 문제의 고유 id
-title: 문제의 제목
+    ```typescript
+    {
+        "problems": [
+            {
+                "id": int, 
+                "title": string
+            },
+            ...
+        ]
+    }
+    ```
+    id: 문제의 고유 id
+    title: 문제의 제목
 - ```GET /api/deps/problem/{problemId}```
-problemId: 문제의 id
-```json
-{
-    "id": int,
-    "title": string,
-    "content": string
-}
-```
-id: 문제의 id
-title: 문제의 제목
-content: MD 형식으로 쓰여진 문제의 본문
+    problemId: 문제의 id
+    - response
+        ```typescript
+        {
+            "id": int,
+            "title": string,
+            "content": string
+        }
+        ```
+        id: 문제의 id
+        title: 문제의 제목
+        content: MD 형식으로 쓰여진 문제의 본문
 
 #### 문제 채점
 - ```POST /api/deps/submit/{problemId}```
     problemId: 문제 id
     - body
-    ```json
-    {
-        "language": string,
-        "code": string
-    }
-    ```
-    language: 프로그래밍 언어 종류(C99, C++23, Java8, ..)
-    code: 소스 코드
+        ```typescript
+        {
+            "language": string,
+            "code": string
+        }
+        ```
+        language: 프로그래밍 언어 종류(C99, C++23, Java8, ..)
+        code: 소스 코드
     - response
-    ```json
-    {
-        "submissionId": int
-    }
-    ```
-    submissionId: 채점 번호
+        ```typescript
+        {
+            "submissionId": int
+        }
+        ```
+        submissionId: 채점 번호
 
-- ```POST /api/deps/beginJudge/{submissionId}```
+- ```GET /api/deps/judge-status/{submissionId}```
     submissionId: 채점 번호
-    - body
-    ```json
-    TODO
-    ```
     - response
-TODO
+        ```typescript
+        {
+            "status": "waiting" | "judging" | "finished",
+            "result": "AC" | "WA" | "TLE" | "MLE" | "RE" | undefined,
+            "additionalInfo": string | undefined,
+        }
+        ```
+
+### 랭킹 서버
