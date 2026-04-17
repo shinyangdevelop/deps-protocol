@@ -112,7 +112,7 @@ type Identity = {
     // 위의 IdentityInfo 타입의 오브젝트를 typescript으로 직렬화한 문자열.
     info: string,
 
-    // info 문자열을 서버의 key로 서명한 값.
+    // info 문자열을 identity에 대응하는 비밀 키로 서명한 값.
     signature: string,
 }
 ```
