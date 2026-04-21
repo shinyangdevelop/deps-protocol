@@ -66,7 +66,7 @@ type IdentityPackage = {
     "key": string,
     "data": {
         "signedAt": Date,
-        "intent": "deps.migration/export",
+        "intent": "deps.migration@1/export",
         "server": string,
     },
     "sign": string,
@@ -74,7 +74,7 @@ type IdentityPackage = {
 ```
 
 - `signedAt`은 현재 시각으로 해야 한다.
-- `intent`는 고정값 `"deps.migration/export"`이어야 한다.
+- `intent`는 고정값 `"deps.migration@1/export"`이어야 한다.
 - `server`는 이 요청을 받는 홈서버의 도메인이어야 한다.
 
 #### 응답
@@ -96,7 +96,7 @@ type IdentityPackage = {
 
 #### 서버의 필수 검증
 
-1. `intent`가 `"deps.migration/export"`인지 확인한다.
+1. `intent`가 `"deps.migration@1/export"`인지 확인한다.
 2. `server`가 이 홈서버의 도메인과 같은지 확인한다.
 3. `signedAt`이 받아들일 수 있는 범위 (e.g. 30초) 내에 있는지 확인한다.
 4. `key`가 이 홈서버에 등록된 아이덴티티 식별자인지 확인한다.
@@ -135,7 +135,7 @@ type IdentityPackage = {
             // 추가로 임의의 필드가 포함될 수 있다.
         },
         "signedAt": Date,
-        "intent": "deps.migration/import",
+        "intent": "deps.migration@1/import",
         "server": string,
     },
     "sign": string,
@@ -146,7 +146,7 @@ type IdentityPackage = {
     - `key`와 `data.package.identity`가 가리키는 아이덴티티는 같아야 한다.
 - `data.package`는 `2.1`에서 정의된 아이덴티티 패키지 파일과 동일한 구조를 가진다.
 - `data.signedAt`은 현재 시각으로 해야 한다.
-- `data.intent`는 고정값 `"deps.migration/import"`이어야 한다.
+- `data.intent`는 고정값 `"deps.migration@1/import"`이어야 한다.
 - `data.server`는 이 홈서버의 도메인이어야 한다.
 
 #### 응답
@@ -163,7 +163,7 @@ type IdentityPackage = {
 
 1. `key`가 이 홈서버에 등록된 아이덴티티인지 확인한다.
 2. 요청의 유효성을 검증한다.
-    - `data.intent`가 `"deps.migration/import"`인지 확인한다.
+    - `data.intent`가 `"deps.migration@1/import"`인지 확인한다.
     - `data.server`가 이 홈서버의 도메인과 같은지 확인한다.
     - `data.signedAt`이 받아들일 수 있는 범위 (e.g. 30초) 내에 있는지 확인한다.
     - `key`와 `data.package.identity`가 같은 아이덴티티를 가리키는지 확인한다.
